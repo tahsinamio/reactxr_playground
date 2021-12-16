@@ -27,7 +27,7 @@ const useShoeStore = create((set) => ({
   }
 }))
 
-function Cube({ position, args = [0.06, 0.06, 0.06] }: any) {
+function Cube({ position, args = [6, 6, 6] }: any) {
   const [boxRef] = useBox(() => ({ position, mass: 1, args }))
   const [tex] = useMatcapTexture('C7C0AC_2E181B_543B30_6B6270')
 
@@ -83,6 +83,29 @@ const HandsColliders = (): any =>
     </Fragment>
   ))
 
+function Shoe() {
+  const ref = useRef()
+  const [color, setColor] = useState('blue')
+  // Drei's useGLTF hook sets up draco automatically, that's how it differs from useLoader(GLTFLoader, url)
+  // { nodes, materials } are extras that come from useLoader, these do not exist in threejs/GLTFLoader
+  // nodes is a named collection of meshes, materials a named collection of materials
+  const { nodes, materials } = useGLTF('shoe-draco.glb')
+
+  // Using the GLTFJSX output here to wire in app-state and hook up events
+  return (
+    <group>
+      <mesh receiveShadow castShadow geometry={nodes.shoe.geometry} material={materials.laces} material-color={color} />
+      <mesh receiveShadow castShadow geometry={nodes.shoe_1.geometry} material={materials.mesh} material-color={color} />
+      <mesh receiveShadow castShadow geometry={nodes.shoe_2.geometry} material={materials.caps} material-color={color} />
+      <mesh receiveShadow castShadow geometry={nodes.shoe_3.geometry} material={materials.inner} material-color={color} />
+      <mesh receiveShadow castShadow geometry={nodes.shoe_4.geometry} material={materials.sole} material-color={color} />
+      <mesh receiveShadow castShadow geometry={nodes.shoe_5.geometry} material={materials.stripes} material-color={color} />
+      <mesh receiveShadow castShadow geometry={nodes.shoe_6.geometry} material={materials.band} material-color={color} />
+      <mesh receiveShadow castShadow geometry={nodes.shoe_7.geometry} material={materials.patch} material-color={color} />
+    </group>
+  )
+}
+
 function HelloXR() {
   const [color, setColor] = useState('blue')
 
@@ -101,38 +124,10 @@ function HelloXR() {
   return (
     <>
       <Interactive onHover={interactAction} onBlur={interactAction}>
-        <Cube key={12} position={[-0, 1.2, -0.4]} />
+        <Shoe />
       </Interactive>
       <spotLight position={[1, 8, 1]} angle={0.3} penumbra={1} color={color} intensity={20} castShadow />
     </>
-  )
-}
-
-function Shoe() {
-  const ref = useRef()
-  // Drei's useGLTF hook sets up draco automatically, that's how it differs from useLoader(GLTFLoader, url)
-  // { nodes, materials } are extras that come from useLoader, these do not exist in threejs/GLTFLoader
-  // nodes is a named collection of meshes, materials a named collection of materials
-  const { nodes, materials } = useGLTF('shoe-draco.glb')
-
-  // Using the GLTFJSX output here to wire in app-state and hook up events
-  return (
-    <group
-      ref={ref}
-      dispose={null}
-      onPointerOver={(e) => (e.stopPropagation(), set(e.object.material.name))}
-      onPointerOut={(e) => e.intersections.length === 0 && set(null)}
-      onPointerMissed={() => (state.current = null)}
-      onClick={(e) => (e.stopPropagation(), (state.current = e.object.material.name))}>
-      <mesh receiveShadow castShadow geometry={nodes.shoe.geometry} material={materials.laces} material-color={snap.items.laces} />
-      <mesh receiveShadow castShadow geometry={nodes.shoe_1.geometry} material={materials.mesh} material-color={snap.items.mesh} />
-      <mesh receiveShadow castShadow geometry={nodes.shoe_2.geometry} material={materials.caps} material-color={snap.items.caps} />
-      <mesh receiveShadow castShadow geometry={nodes.shoe_3.geometry} material={materials.inner} material-color={snap.items.inner} />
-      <mesh receiveShadow castShadow geometry={nodes.shoe_4.geometry} material={materials.sole} material-color={snap.items.sole} />
-      <mesh receiveShadow castShadow geometry={nodes.shoe_5.geometry} material={materials.stripes} material-color={snap.items.stripes} />
-      <mesh receiveShadow castShadow geometry={nodes.shoe_6.geometry} material={materials.band} material-color={snap.items.band} />
-      <mesh receiveShadow castShadow geometry={nodes.shoe_7.geometry} material={materials.patch} material-color={snap.items.patch} />
-    </group>
   )
 }
 
@@ -140,15 +135,12 @@ function Scene() {
   const [floorRef] = usePlane(() => ({
     args: [10, 10],
     rotation: [-Math.PI / 2, 0, 0],
-    position: [0, 1, 0],
+    position: [0, -1, 0],
     type: 'Static'
   }))
   return (
     <>
       <Sky distance={450000} sunPosition={[0, 1, 0]} inclination={0} azimuth={0.25} />
-      <Plane ref={floorRef} args={[10, 10]} receiveShadow>
-        <meshStandardMaterial attach="material" color="#fff" />
-      </Plane>
       <Hands />
       <HandsReady>
         <HandsColliders />
@@ -157,6 +149,9 @@ function Scene() {
         <Cube key={i} position={[0, 1.1 + 0.1 * i, -0.5]} />
       ))} */}
       <HelloXR />
+      <Plane ref={floorRef} args={[10, 10]} receiveShadow>
+        <meshStandardMaterial attach="material" color="#fff" />
+      </Plane>
       <OrbitControls position={[1, 2, 3]} minPolarAngle={Math.PI / 3} maxPolarAngle={Math.PI / 3} enableZoom={true} enablePan={false} />
     </>
   )
