@@ -93,7 +93,7 @@ function Shoe() {
 
   // Using the GLTFJSX output here to wire in app-state and hook up events
   return (
-    <group scale={[0.2, 0.2, 0.2]}>
+    <group scale={[0.2, 0.2, 0.2]} position={[0, 1, 0.4]}>
       <mesh receiveShadow castShadow geometry={nodes.shoe.geometry} material={materials.laces} material-color={color} />
       <mesh receiveShadow castShadow geometry={nodes.shoe_1.geometry} material={materials.mesh} material-color={color} />
       <mesh receiveShadow castShadow geometry={nodes.shoe_2.geometry} material={materials.caps} material-color={color} />
@@ -126,7 +126,7 @@ function HelloXR() {
       <Interactive onHover={interactAction} onBlur={interactAction}>
         <Shoe />
       </Interactive>
-      <spotLight position={[1, 8, 1]} angle={0.3} penumbra={1} color={color} intensity={20} castShadow />
+      <spotLight position={[1, 8, 1]} angle={0.3} penumbra={1} color={'fff'} intensity={20} castShadow />
     </>
   )
 }
@@ -135,7 +135,7 @@ function Scene() {
   const [floorRef] = usePlane(() => ({
     args: [10, 10],
     rotation: [-Math.PI / 2, 0, 0],
-    position: [0, -1.2, 0],
+    position: [0, -0.9, 0],
     type: 'Static'
   }))
   return (
