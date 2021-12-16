@@ -9,7 +9,7 @@ import { joints } from './joints'
 import './styles.css'
 
 const useStore = create((set) => ({
-  color: '',
+  color: 'white',
   removeAllBears: (val: string) => set({ color: val })
 }))
 
@@ -84,48 +84,28 @@ const HandsColliders = (): any =>
   ))
 
 function Shoe() {
-  // Drei's useGLTF hook sets up draco automatically, that's how it differs from useLoader(GLTFLoader, url)
-  // { nodes, materials } are extras that come from useLoader, these do not exist in threejs/GLTFLoader
-  // nodes is a named collection of meshes, materials a named collection of materials
-  const { nodes, materials } = useGLTF('shoe-draco.glb')
-
   const [color, setColor] = useState('white')
 
-  const randomColor = () => {
-    const colors = ['blue', 'orange', 'green', 'yellow', 'purple', 'pink', 'white', 'red']
-    const randomElement = colors[Math.floor(Math.random() * colors.length)]
-
-    return randomElement
-  }
-
   const interactAction = () => {
-    setColor(randomColor())
+    setColor((Math.random() * 0xffffff) | 0)
     useStore.setState({ color: color })
   }
+  const { nodes, materials } = useGLTF('shoe-draco.glb')
 
   // Using the GLTFJSX output here to wire in app-state and hook up events
   return (
-    <group scale={[0.2, 0.2, 0.2]} position={[0, 1, 0.4]} onPointerOver={interactAction}>
-      <mesh receiveShadow castShadow geometry={nodes.shoe.geometry} material={materials.laces} material-color={color} />
-      <mesh receiveShadow castShadow geometry={nodes.shoe_1.geometry} material={materials.mesh} material-color={color} />
-      <mesh receiveShadow castShadow geometry={nodes.shoe_2.geometry} material={materials.caps} material-color={color} />
-      <mesh receiveShadow castShadow geometry={nodes.shoe_3.geometry} material={materials.inner} material-color={color} />
-      <mesh receiveShadow castShadow geometry={nodes.shoe_4.geometry} material={materials.sole} material-color={color} />
-      <mesh receiveShadow castShadow geometry={nodes.shoe_5.geometry} material={materials.stripes} material-color={color} />
-      <mesh receiveShadow castShadow geometry={nodes.shoe_6.geometry} material={materials.band} material-color={color} />
-      <mesh receiveShadow castShadow geometry={nodes.shoe_7.geometry} material={materials.patch} material-color={color} />
-    </group>
-  )
-}
-
-function HelloXR() {
-  return (
-    <>
-      <Interactive>
-        <Shoe />
-      </Interactive>
-      <spotLight position={[1, 8, 1]} angle={0.3} penumbra={1} color={'#fff'} intensity={10} castShadow />
-    </>
+    <Interactive onHover={interactAction}>
+      <group scale={[0.2, 0.2, 0.2]} position={[0, 1, 0.4]}>
+        <mesh receiveShadow castShadow geometry={nodes.shoe.geometry} material={materials.laces} material-color={color} />
+        <mesh receiveShadow castShadow geometry={nodes.shoe_1.geometry} material={materials.mesh} material-color={color} />
+        <mesh receiveShadow castShadow geometry={nodes.shoe_2.geometry} material={materials.caps} material-color={color} />
+        <mesh receiveShadow castShadow geometry={nodes.shoe_3.geometry} material={materials.inner} material-color={color} />
+        <mesh receiveShadow castShadow geometry={nodes.shoe_4.geometry} material={materials.sole} material-color={color} />
+        <mesh receiveShadow castShadow geometry={nodes.shoe_5.geometry} material={materials.stripes} material-color={color} />
+        <mesh receiveShadow castShadow geometry={nodes.shoe_6.geometry} material={materials.band} material-color={color} />
+        <mesh receiveShadow castShadow geometry={nodes.shoe_7.geometry} material={materials.patch} material-color={color} />
+      </group>
+    </Interactive>
   )
 }
 
@@ -146,7 +126,8 @@ function Scene() {
       {/* {[...Array(7)].map((_, i) => (
         <Cube key={i} position={[0, 1.1 + 0.1 * i, -0.5]} />
       ))} */}
-      <HelloXR />
+      <Shoe />
+      <spotLight position={[1, 8, 1]} angle={0.3} penumbra={1} color={'#fff'} intensity={10} castShadow />
       <Plane ref={floorRef} args={[10, 10]} receiveShadow>
         <meshStandardMaterial attach="material" color="#000" />
       </Plane>
