@@ -93,7 +93,7 @@ function Shoe() {
 
   // Using the GLTFJSX output here to wire in app-state and hook up events
   return (
-    <group>
+    <group scale={[0.2, 0.2, 0.2]}>
       <mesh receiveShadow castShadow geometry={nodes.shoe.geometry} material={materials.laces} material-color={color} />
       <mesh receiveShadow castShadow geometry={nodes.shoe_1.geometry} material={materials.mesh} material-color={color} />
       <mesh receiveShadow castShadow geometry={nodes.shoe_2.geometry} material={materials.caps} material-color={color} />
@@ -135,7 +135,7 @@ function Scene() {
   const [floorRef] = usePlane(() => ({
     args: [10, 10],
     rotation: [-Math.PI / 2, 0, 0],
-    position: [0, -1, 0],
+    position: [0, -1.2, 0],
     type: 'Static'
   }))
   return (
