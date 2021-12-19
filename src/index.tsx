@@ -90,46 +90,30 @@ const HandsColliders = (): any =>
 function Shoe() {
     const { nodes, materials } = useGLTF('shoe-draco.glb')
 
-    const [hovered, setHovered] = useState(false)
+    // const [hovered, setHovered] = useState(false)
     const items = useShoeStore((state) => state)
 
-    const interactAction = (material: any) => {
-        let color = (Math.random() * 0xffffff) | 0
-        // if (hovered) useShoeStore.setState({laces: '#321029'})
-    }
+    // const interactAction = (material: any) => {
+    //     let color = (Math.random() * 0xffffff) | 0
+    //     // if (hovered) useShoeStore.setState({laces: '#321029'})
+    // }
 
-    if (hovered) {
-        useShoeStore.setState({ laces: '#321029' })
-        setHovered(false)
-    }
+    // if (hovered) {
+    //     useShoeStore.setState({ laces: '#321029' })
+    //     setHovered(false)
+    // }
 
     // Using the GLTFJSX output here to wire in app-state and hook up events
     return (
-        <group scale={[0.16, 0.16, 0.16]} position={[0, 1, 0.4]}>
-            <Interactive onHover={() => setHovered(true)} onBlur={() => setHovered(false)}>
-                <mesh receiveShadow castShadow geometry={nodes.shoe.geometry} material={materials.laces} material-color={items.laces} />
-            </Interactive>
-            <Interactive onHover={interactAction('mesh')}>
-                <mesh receiveShadow castShadow geometry={nodes.shoe_1.geometry} material={materials.mesh} material-color={items.mesh} />
-            </Interactive>
-            <Interactive onHover={interactAction('caps')}>
-                <mesh receiveShadow castShadow geometry={nodes.shoe_2.geometry} material={materials.caps} material-color={items.caps} />
-            </Interactive>
-            <Interactive onHover={interactAction('inner')}>
-                <mesh receiveShadow castShadow geometry={nodes.shoe_3.geometry} material={materials.inner} material-color={items.inner} />
-            </Interactive>
-            <Interactive onHover={interactAction('sole')}>
-                <mesh receiveShadow castShadow geometry={nodes.shoe_4.geometry} material={materials.sole} material-color={items.sole} />
-            </Interactive>
-            <Interactive onHover={interactAction('stripes')}>
-                <mesh receiveShadow castShadow geometry={nodes.shoe_5.geometry} material={materials.stripes} material-color={items.stripes} />
-            </Interactive>
-            <Interactive onHover={interactAction('band')}>
-                <mesh receiveShadow castShadow geometry={nodes.shoe_6.geometry} material={materials.band} material-color={items.band} />
-            </Interactive>
-            <Interactive onHover={interactAction('patch')}>
-                <mesh receiveShadow castShadow geometry={nodes.shoe_7.geometry} material={materials.patch} material-color={items.patch} />
-            </Interactive>
+        <group scale={[0.16, 0.16, 0.16]} position={[0, 0, 0.4]}>
+            <mesh receiveShadow castShadow geometry={nodes.shoe.geometry} material={materials.laces} material-color={items.laces} />
+            <mesh receiveShadow castShadow geometry={nodes.shoe_1.geometry} material={materials.mesh} material-color={items.mesh} />
+            <mesh receiveShadow castShadow geometry={nodes.shoe_2.geometry} material={materials.caps} material-color={items.caps} />
+            <mesh receiveShadow castShadow geometry={nodes.shoe_3.geometry} material={materials.inner} material-color={items.inner} />
+            <mesh receiveShadow castShadow geometry={nodes.shoe_4.geometry} material={materials.sole} material-color={items.sole} />
+            <mesh receiveShadow castShadow geometry={nodes.shoe_5.geometry} material={materials.stripes} material-color={items.stripes} />
+            <mesh receiveShadow castShadow geometry={nodes.shoe_6.geometry} material={materials.band} material-color={items.band} />
+            <mesh receiveShadow castShadow geometry={nodes.shoe_7.geometry} material={materials.patch} material-color={items.patch} />
         </group>
     )
 }
