@@ -9,18 +9,15 @@ import { joints } from './joints'
 import './styles.css'
 
 const useShoeStore = create((set) => ({
-    current: null,
-    items: {
-        laces: '#0000ff',
-        mesh: '#ffffff',
-        caps: '#ffffff',
-        inner: '#ffffff',
-        sole: '#ffffff',
-        stripes: '#ff0000',
-        band: '#ffffff',
-        patch: '#0000ff'
-        // setItemColor: (material, color) => set((state) => laces '0')
-    }
+    laces: '#0000ff',
+    mesh: '#ffffff',
+    caps: '#ffffff',
+    inner: '#ffffff',
+    sole: '#ffffff',
+    stripes: '#ff0000',
+    band: '#ffffff',
+    patch: '#0000ff'
+    // setItemColor: (material, color) => set((state) => laces '0')
 }))
 
 // changeItemColor: (material, color) =>
@@ -93,17 +90,20 @@ const HandsColliders = (): any =>
 function Shoe() {
     const { nodes, materials } = useGLTF('shoe-draco.glb')
 
-    const items = useShoeStore((state) => state.items)
+    const [hovered, setHovered] = useState(false)
+    const items = useShoeStore((state) => state)
 
     const interactAction = (material: any) => {
         let color = (Math.random() * 0xffffff) | 0
-        items[material] = color
+        // if (hovered) useShoeStore.setState({laces: '#321029'})
     }
+
+    if (hovered) useShoeStore.setState({ laces: '#321029' })
 
     // Using the GLTFJSX output here to wire in app-state and hook up events
     return (
         <group scale={[0.16, 0.16, 0.16]} position={[0, 1, 0.4]}>
-            <Interactive onHover={interactAction('laces')}>
+            <Interactive onHover={() => setHovered(true)} onBlur={() => setHovered(false)}>
                 <mesh receiveShadow castShadow geometry={nodes.shoe.geometry} material={materials.laces} material-color={items.laces} />
             </Interactive>
             <Interactive onHover={interactAction('mesh')}>
@@ -160,7 +160,7 @@ function Scene() {
 }
 
 const PrintColors = () => {
-    const items = useShoeStore((state) => state.items)
+    const items = useShoeStore((state) => state)
     return <h1>{items.laces} around here ...</h1>
 }
 
