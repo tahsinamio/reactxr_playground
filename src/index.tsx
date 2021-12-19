@@ -98,7 +98,10 @@ function Shoe() {
         // if (hovered) useShoeStore.setState({laces: '#321029'})
     }
 
-    if (hovered) useShoeStore.setState({ laces: '#321029' })
+    if (hovered) {
+        useShoeStore.setState({ laces: '#321029' })
+        setHovered(false)
+    }
 
     // Using the GLTFJSX output here to wire in app-state and hook up events
     return (
