@@ -55,9 +55,11 @@ function Box({ color, size, scale, children, ...rest }: any) {
 function Button(props: any) {
     const [hover, setHover] = useState(false)
     const [color, setColor] = useState(0x123456)
+    const items = useShoeStore((state) => state)
 
     const onSelect = () => {
-        setColor((Math.random() * 0xffffff) | 0)
+        useShoeStore.setState({ laces: '#321029' })
+        setColor(321029)
     }
 
     return (
